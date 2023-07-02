@@ -39,6 +39,7 @@ class Value:
         self.description = description
         self.category = category
         self._isSet = False
+        self._isOverwrite = False
         self._data = None
         self._default = defaultValue
         self._defaultNode = None
@@ -71,9 +72,19 @@ class Value:
         """
         Get value
         """
+        if( self._isOverwrite == True ):
+            return self._data
         if( self.isSet() == False ):
             return self.getDefault()
         return self._data
+
+
+    def overwrite( self, value ):
+        """
+        Overwrite value
+        """
+        self._isOverwrite = True
+        self._data = value
 
 
     def isSet( self ):

@@ -36,19 +36,84 @@ class GlobalArgs:
             "help"
         )
 
+        # directory of module where the build script is invoked
+        self.initialModule = cmdvalue.Value(
+            identifier   = "general.initialmodule-dir",
+            description  = "Directory of initial module where the build script was invoked.",
+            category     = self.generalCategory,
+            defaultValue = None,
+            expected     = False,
+            unique       = True
+        )
+
+        # directory of module where the build script is invoked
+        self.localRepos = cmdvalue.Value(
+            identifier   = "general.localrepos-dir",
+            description  = "Directory where local repositories are located.",
+            category     = self.generalCategory,
+            defaultValue = None,
+            expected     = False,
+            unique       = True
+        )
+
         # workspace directory
         self.workspace = cmdvalue.Value(
-            identifier   = "general.workspace",
-            description  = "Set workspace path. By default the workspace is set to the parent directory of the module where the build script is invoked.",
+            identifier   = "general.workspace-dir",
+            description  = "Set workspace path. By default the workspace is set to the parent directory of the module where the build script is invoked with /.workspace appended.",
             category     = self.generalCategory,
-            defaultValue = defaultWorkspacePath,
+            defaultValue = defaultWorkspacePath + '/.workspace',
             expected     = False,
             unique       = True
         )
 
         self.workspace_Argument = cmdarg.StringArgument(
             self.workspace,
-            "workspace",
+            "workspace-dir",
+            "<dir>"
+        )
+
+        # build log directory
+        self.buildlogPath = cmdvalue.Value(
+            identifier   = "general.buildlog-dir",
+            description  = "Set build log path. By default the build log is set to '${workspace-dir}/.buildlog'.",
+            category     = self.generalCategory,
+            expected     = False,
+            unique       = True
+        )
+
+        self.buildlogPath_Argument = cmdarg.StringArgument(
+            self.buildlogPath,
+            "buildlog-dir",
+            "<dir>"
+        )
+
+        # fetched directory
+        self.fetchedPath = cmdvalue.Value(
+            identifier   = "general.fetched-dir",
+            description  = "Set path to fetch dependencies. By default the build log is set to '${workspace-dir}/.fetched'.",
+            category     = self.generalCategory,
+            expected     = False,
+            unique       = True
+        )
+
+        self.fetchedPath_Argument = cmdarg.StringArgument(
+            self.fetchedPath,
+            "fetch-dir",
+            "<dir>"
+        )
+
+        # cache directory
+        self.cachePath = cmdvalue.Value(
+            identifier   = "general.cache-dir",
+            description  = "Set path of cache. By default the build log is set to '${workspace-dir}/.cache'.",
+            category     = self.generalCategory,
+            expected     = False,
+            unique       = True
+        )
+
+        self.cachePath_Argument = cmdarg.StringArgument(
+            self.cachePath,
+            "cache-dir",
             "<dir>"
         )
 
@@ -104,8 +169,20 @@ class GlobalArgs:
         ctx.addValue( self.generalHelp )
         ctx.addArgument( self.generalHelp_Argument )
 
+        ctx.addValue( self.initialModule )
+        ctx.addValue( self.localRepos )
+
         ctx.addValue( self.workspace )
         ctx.addArgument( self.workspace_Argument )
+
+        ctx.addValue( self.buildlogPath )
+        ctx.addArgument( self.buildlogPath_Argument )
+
+        ctx.addValue( self.fetchedPath )
+        ctx.addArgument( self.fetchedPath_Argument )
+
+        ctx.addValue( self.cachePath )
+        ctx.addArgument( self.cachePath_Argument )
         
         ctx.addValue( self.librarianmode )
         ctx.addArgument( self.librarianmode_Argument )

@@ -62,6 +62,17 @@ class ParserRegistry:
         return None
 
 
+    def overwrite( self, valueIdent: str, value ) -> None:
+        """
+        Sets a value by identifier
+        """
+        r = self.get( valueIdent )
+        if r != None:
+            r.overwrite( value )
+        else:
+            raise KeyError( "command line key " + valueIdent + " is unknown" )
+
+
     def resolve( self, valueIdent: str ):
         """
         Resolves default or value by key
